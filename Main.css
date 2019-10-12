@@ -1,0 +1,68 @@
+
+.full-width{
+        width: 100%;
+    }
+
+.fill50 {
+	width:50vw;
+}
+
+#portInfoCard
+{
+    width: 470px;
+    height: 280px;
+    bottom:10%;
+    right: 10%;
+    position: fixed;
+    background-color: #F1F7FE
+
+}
+
+.button-display-topright
+{
+    position:absolute;
+    left:93%;
+    top:5%;
+}
+
+#portListHeader
+{
+    background-color: #D5E0EE ;
+    color: black;
+    font-size: 18px
+}
+
+#portsList
+{
+    font-size: 16px;
+}
+
+#routeinfo{
+  width: 470px;
+  height: 280px;
+  border: 2px solid black;
+  bottom: 47%;
+  right: 30%;
+  position: fixed;
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 5px;
+}
+
+#deleteRoute{
+  float: right;
+}
+
+#closeTab{
+  float: right;
+}
+
+#postponepage{
+  float: right;
+}
+
+#mapAreaBooking{
+  height: 300px;
+  width: 50%;
+  left: 29%;
+  top: 8%;
+}
