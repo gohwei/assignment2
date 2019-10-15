@@ -66,3 +66,10 @@
   left: 29%;
   top: 8%;
 }
+
+#wayPoint{
+  float: left;
+  position: absolute;
+  z-index: 1;
+  bottom: 7%;
+}

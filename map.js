@@ -1,5 +1,5 @@
 mapboxgl.accessToken = 'pk.eyJ1Ijoic2Ftd29uZzEzOSIsImEiOiJjazB1dGZ5OHcwcnd5M2lsYTRqNG5ycm9rIn0.7219ikKXH6Z6tixAlsr5mg';
-map = new  mapboxgl.Map({
+ let map = new  mapboxgl.Map({
     container: 'mapArea',
 	center: [44.63, 28.77],
 	zoom: 1,
@@ -22,7 +22,7 @@ function searchRoutes()
                     }
             }
     }
-    
+
     function sourcePort()
     {
         for (let i = 0;i<portsList.length; i++)
@@ -78,6 +78,6 @@ function searchRoutes()
             }
 
             document.body.appendChild(script);
-        }  
+        }
 
 }

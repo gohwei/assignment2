@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="Main.css">
 
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.1.1/mapbox-gl.js'></script>
+
+
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.1.1/mapbox-gl.css' rel='stylesheet'>
   </head>
   <body>
@@ -95,8 +97,8 @@
 
 
                       </div>
+                      <script src="booking.js" ></script>
 
-                      <script src="booking.js"></script>
                 </section>
 
                 <!-- Ships tab -->
@@ -164,9 +166,10 @@
                     <div id="hideShipInformation"></div>
 
                     <!-- link js -->
-                    <script src="ship.js"></script>
                   </div>
-                </div></section>
+                </div>
+                <script src="ship.js" type="text/javascript"></script>
+              </section>
 
  <!-- Ports tab -->
                 <section class = "mdl-layout__tab-panel" id = "portsTab">
@@ -233,8 +236,6 @@
                                          </div>
 
                                         <!-- link js -->
-                                        <script src="port.js"></script>
-                                        <script src="webServiceRequest.js"></script>
                                 </div>
                             </div>
 
@@ -242,6 +243,8 @@
                     </div>
                     </div>
                     </div>
+                    <script src="webServiceRequest.js"></script>
+                    <script src="port.js" ></script>
                     </section>
 
 
@@ -260,16 +263,27 @@
                         <div>
                         <b>Source port: </b>
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text"  id="sourcePort">
+                          <form action="/action_page.php">
+
+                            <input class="mdl-textfield__input" type="text"  id="sourcePort" list="srcDropList">
                             <label class="mdl-textfield__label" for="sourcePort">From</label>
+                            <datalist id="srcDropList">
+
+                              </datalist>
+                            </form>
+
                         </div>
 
 
                   <b>Departure Date: </b>
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text"   id="departDate">
+                  <input class="mdl-textfield__input" type="text"   id="departDate" list="browsers">
                   <label class="mdl-textfield__label" for="departDate">Depart at</label>
+
+                          </form>
                         </div>
+
+
 
                 <b>Destination port: </b>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -312,7 +326,13 @@
 
                     </style>
                 </head>
-                  <div id='mapArea' class='page-block'></div>
+                  <div id='mapArea' class='page-block'>
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick="addWayPoint()" data-upgraded=",MaterialButton" id="wayPoint">
+                          Add Waypoint
+                    </button>
+                  </div>
+
+
                   <!-- <figure class="icons">
                     <canvas id="partly-cloudy-night" width="64" height="64"></canvas>
                   </figure>
@@ -359,21 +379,30 @@
                     </div>
 
 
+
                 <!-- Simple Select -->
                       <br/>
             			<div>
-            				<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick = "findShip()">
+            				<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick = "searchRoutes()">
             					Find ship
             				</button>
             			</div>
                         </div>
+
             			<div id="hiddenDialog"></div>
 
             			<!-- link js -->
-                        <script src="map.js"></script>
+
                         </div>
                       </div>
+
+
+                      <script src="map.js"></script>
+                      <script src="routes.js"></script>
+
                 </section>
             </main>
+
+
     </body>
 </html>

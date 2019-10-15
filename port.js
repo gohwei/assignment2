@@ -1,4 +1,3 @@
-"use strict"
 class Port
 {
   constructor(name, country, type, size, locprecision, lat, lng)
@@ -99,7 +98,7 @@ class Port
                 {
                     return arrayItem.name.toUpperCase() == port.toUpperCase();
                 });
-                
+
                 if(result == -1 && newPortList.length >=1)
                     {
                         result = newPortList.findIndex(
@@ -209,7 +208,7 @@ function generatePortList()
 {
 
 	let output = "";
-    
+
     //create row for add port
      for (let j = 0; j < newPortList.length; j++)
 	{
@@ -219,7 +218,7 @@ function generatePortList()
         output += "Port Name: " + newPortList[j].name ;
         output += "<div class=\"subtitle\">" + "Country: " + newPortList[j].country +"<br><br><b>VIEW</b></div></td></tr>";
 	}
-    
+
     //create row for port from API
 	for (let i = 0; i < portList.length; i++)
 	{
@@ -228,7 +227,7 @@ function generatePortList()
         output += "Port Name: " + portList[i].name ;
         output += "<div class=\"subtitle\">" + "Country: " + portList[i].country +"<br><br><b>VIEW</b></div></td></tr>";
 	}
-    
+
     return output
 }
 /**
@@ -337,7 +336,7 @@ function addPort(portInfo)
         }
             portsListElement.innerHTML = generatePortList();
     }
-    else 
+    else
     {
         alert("This address is invalid ! Please enter a valid address !!!")
     }
