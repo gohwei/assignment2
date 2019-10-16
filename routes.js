@@ -109,6 +109,57 @@ function searchRoutes()
 
             referenceLength = object.geometry.coordinates.length;
 
+          let darksky = 'https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/';
+      let key = '9610451768f0eed3dde6aaa8604ffd41';
+      let sourcelatt = portSrc.lat;
+      let sourcelng = portSrc.lng;
+      let api = darksky + key + '/' + sourcelatt + ',' + sourcelng;
+      api = api.concat('?exclude=minutely,hourly,daily&units=si');
+
+      fetch(api)
+          .then((response)=>{
+              if(response.ok)
+              {
+                  return response.json();
+              }
+              else
+              {
+                  alert("Location unknown. Click the \"Get Current Location\" button")
+              }
+          })
+          .then( (j) =>{
+            document.getElementById("summ").innerHTML =  j.currently.summary;
+
+          })
+          .catch( (err) =>{
+              console.log('Error:', err.message);
+          });
+
+
+      let deslatt = portDstny.lat;
+      let deslng = portDstny.lng;
+        let desApi = darksky + key + '/' + deslatt + ',' + deslng;
+      desApi = desApi.concat('?exclude=minutely,hourly,daily&units=si');
+
+      fetch(desApi)
+          .then((response)=>{
+              if(response.ok)
+              {
+                  return response.json();
+              }
+              else
+              {
+                  alert("Location unknown. Click the \"Get Current Location\" button")
+              }
+          })
+          .then( (k) =>{
+            document.getElementById("summ2").innerHTML =  k.currently.summary;
+
+          })
+          .catch( (err) =>{
+              console.log('Error:', err.message);
+          });
+
   }
 
 
@@ -194,10 +245,5 @@ function addWayPoint()
         // Display the popup.
         popup.addTo(map);
       }
-
-
-
-
-
 
 }

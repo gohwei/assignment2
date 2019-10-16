@@ -1,4 +1,14 @@
 
+header{
+    font-family: georgia
+}
+body1 {
+  padding: 20px;
+  background: #fafafa;
+  position: relative;
+color: white;
+}
+
 .full-width{
         width: 100%;
     }
@@ -7,7 +17,7 @@
 	width:50vw;
 }
 
-#portInfoCard
+#portInfoCard, #shipInfoCard
 {
     width: 470px;
     height: 280px;
@@ -25,16 +35,21 @@
     top:5%;
 }
 
-#portListHeader
+#portListHeader, #shipListHeader
 {
     background-color: #D5E0EE ;
     color: black;
     font-size: 18px
 }
 
-#portsList
+#portsList, #shipList
 {
-    font-size: 16px;
+    font-size: 15px;
+}
+
+.page-content
+{
+    color:white;
 }
 
 #routeinfo{
@@ -72,4 +87,27 @@
   position: absolute;
   z-index: 1;
   bottom: 7%;
+}
+
+option{
+    color:black;
+}
+#table-weather{
+    width:100%;
+    border-collapse: collapse;
+}
+#mapArea{
+    height:400px;
+    width: 55%;
+    margin-right: 10px;
+    border: 1px solid grey;
+    float:left;
+    margin-left: 10px;
+}
+#contentArea{
+    max-width: 45%;
+    float: left;
+    height:400px;
+    margin-left: 20px;
+    clear: right ;
 }

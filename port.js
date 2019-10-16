@@ -81,12 +81,12 @@ class Port
     this._lng= newLng;
   }
 
+    //purpose : Private method to search the port for a given port name
+    //parameter : port - port name
+    //return output : index
    _searchForPort(port)
     {
-        /*
-         * This is a private method searches the port for a given portName
-         * If it exists, the index is returned; else it returns -1.
-         */
+         // If it exists, the index is returned; else it returns -1.
 
         let result = -1; // assume it's never found
         if (port !== "")
@@ -117,6 +117,8 @@ class Port
         return result
     }
 
+//purpose : Get the data of port that are input by the user from the dialog box
+//return output : port instance
   enrolPort()
     {
 			let portname = document.getElementById("portName").value
@@ -146,7 +148,6 @@ class Port
                         return null;
                     }
 
-
     }
 
   toString()
@@ -154,6 +155,9 @@ class Port
     return this._name ;
   }
 
+  //purpose : convert the data back into a class instance
+  //parameter : dataObject - data object of port
+  //return output : class instance of port
   fromData(dataObject)
 	{
 		this._name = dataObject._name;
@@ -172,8 +176,8 @@ let portsListElement = document.getElementById('portsList');
 
 // global variable to hold the ports information
 let portsList = [];    //data array from API
-let portList =[];      //all port data
-let newPortList = [];  //add port data
+let portList =[];      //array with the class instance for api port data
+let newPortList = [];  //array for local port data
 
 // Make the API call to the ports API for the data provided below
 let portData = {
@@ -182,6 +186,9 @@ let portData = {
 };
 webServiceRequest("https://eng1003.monash/api/v1/ports/", portData);
 
+//purpose : response to the API and get the data
+//parameter : portsArray - an array of ports from API
+//return output : an array with the class instance for port API data
 function portsResponse(portsArray)
 {
     portsList = portsArray;
@@ -203,13 +210,14 @@ function portsResponse(portsArray)
     portsListElement.innerHTML = generatePortList();
 }
 
-//Generate port name list from a array that stored the API data -in class
+//purpose : Generate port name and country list from the port List
+//return output : a table with port data from API and local storage
 function generatePortList()
 {
 
 	let output = "";
 
-    //create row for add port
+    //create row for local port
      for (let j = 0; j < newPortList.length; j++)
 	{
         output += "<tr>"
@@ -230,38 +238,43 @@ function generatePortList()
 
     return output
 }
-/**
- * viewPortInfo function
- * @param  index of selected port to view information
- * This function displays the information for the selected port.
- */
+
+//purpose : display the information for the selected port
+//parameter : portIndex - index of selected port
+//return output : info card with information of the selected port
 document.getElementById("portInfoCard").style.display = "none";
+
 function viewPortInfo(portIndex)
 {
-    document.getElementById("portInfoCard").style.display = "block";
-	document.getElementById("name").innerText = portList[portIndex].name;
+  document.getElementById("portInfoCard").style.display = "block";
+	document.getElementById("portName").innerText = portList[portIndex].name;
 	document.getElementById("country").innerText = portList[portIndex].country;
-    document.getElementById("type").innerText = portList[portIndex].type;
-    document.getElementById("size").innerText = portList[portIndex].size;
-    document.getElementById("locPrecision").innerText = portList[portIndex].locprecision;
-    document.getElementById("lat").innerText = portList[portIndex].lat;
-    document.getElementById("lng").innerText = portList[portIndex].lng;
+  document.getElementById("type").innerText = portList[portIndex].type;
+  document.getElementById("size").innerText = portList[portIndex].size;
+  document.getElementById("locPrecision").innerText = portList[portIndex].locprecision;
+  document.getElementById("lat").innerText = portList[portIndex].lat;
+  document.getElementById("lng").innerText = portList[portIndex].lng;
 
 }
 
+//purpose : display the information for the selected local port
+//parameter : portIndex - index of selected local port
+//return output : info card with information of the selected local port
 function viewNewPortInfo(portIndex)
 {
-    document.getElementById("portInfoCard").style.display = "block";
-	document.getElementById("name").innerText = newPortList[portIndex].name;
+  document.getElementById("portInfoCard").style.display = "block";
+	document.getElementById("portName").innerText = newPortList[portIndex].name;
 	document.getElementById("country").innerText = newPortList[portIndex].country;
-    document.getElementById("type").innerText = newPortList[portIndex].type;
-    document.getElementById("size").innerText = newPortList[portIndex].size;
-    document.getElementById("locPrecision").innerText = newPortList[portIndex].locprecision;
-    document.getElementById("lat").innerText = newPortList[portIndex].lat;
-    document.getElementById("lng").innerText = newPortList[portIndex].lng;
+  document.getElementById("type").innerText = newPortList[portIndex].type;
+  document.getElementById("size").innerText = newPortList[portIndex].size;
+  document.getElementById("locPrecision").innerText = newPortList[portIndex].locprecision;
+  document.getElementById("lat").innerText = newPortList[portIndex].lat;
+  document.getElementById("lng").innerText = newPortList[portIndex].lng;
 
 }
 
+//purpose : Get new port information from the user
+//return output : Display a dialog box with the input column for port information
 function addPortForm()
 {
 		let dialogBox = "";
@@ -292,6 +305,9 @@ function addPortForm()
 	    });
 }
 
+//purpose : Geocode request function
+//parameter : key, address and callback function
+//return output : data of the address
 function geocodeRequest(key, address, callback)
 {
     let script = document.createElement('script');
@@ -299,6 +315,8 @@ function geocodeRequest(key, address, callback)
     document.body.appendChild(script);
 }
 
+//purpose : Call API to get the information from an address
+//return output : Information for an port address
 function getPortLocation()
 {
     let myAddress = document.getElementById("address").value;
@@ -318,6 +336,9 @@ let portCountry = [];
 let portLat = [];
 let portLng = [];
 
+//purpose : response to the API, get the data and store it in the local storage
+//parameter : portInfo - port information from API
+//return output : an array with the class instance for local port data
 function addPort(portInfo)
 {
     let addPortInfo = portInfo;
@@ -331,8 +352,8 @@ function addPort(portInfo)
         let portEnrolment = port.enrolPort();
         if (portEnrolment !== null)
         {
-            newPortList.push(portEnrolment); //push new port to a new list
-            storeDataToLS(newPortList); //store the add port list to local storage
+            newPortList.push(portEnrolment); //push new port to a new port list
+            storeDataToLS(newPortList); //store the port added recently to local storage
         }
             portsListElement.innerHTML = generatePortList();
     }
@@ -344,9 +365,11 @@ function addPort(portInfo)
 };
 
 // local storage
-
 let key ="port";
-//Store data into local storage
+
+//purpose : store port data object into local storage
+//parameter : port - port data object
+//return output : port data is stored in local storage
 function storeDataToLS(port)
 {
 	if(typeof (Storage) !== "undefined")
@@ -359,7 +382,9 @@ function storeDataToLS(port)
 	}
 }
 
-//Retrive data from local storage and convert to javascript object
+//purpose : Retrive data from local storage and convert to Javascript object
+//parameter : storageKey - key value
+//return output : Data in the form of Javascript object
 function retrieveDataFromLS(storageKey)
 {
 	if (typeof(Storage) !== "undefined")
@@ -381,7 +406,8 @@ if (localStorage.length > 0)
     portsListElement.innerHTML = generatePortList(); //And the page display is updated with the previously "saved" data
 }
 
-
+//purpose : Filter the table
+//return output : Display the column with the keyword that is input in the text box
 function search() {
   let input, filter, table, tr, td, i, txtValue;
   input = document.getElementById("searchPort");

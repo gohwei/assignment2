@@ -9,7 +9,6 @@ class Ship
     this._cost = cost;
     this._status = status;
     this._comment = comment;
-    this._newShip = [];
   }
 
   get name()
@@ -84,15 +83,17 @@ class Ship
 
   toString()
   {
-    return
+    return this._name;
   }
 
+  //purpose : Private method to search the ship for a given ship name
+  //parameter : ship - ship name
+  //return output : index
   _searchForShip(ship)
   {
-      /*
-       * This is a private method searches the ship for a given portName
-       * If it exists, the index is returned; else it returns -1.
-       */
+
+      //If it exists, the index is returned; else it returns -1.
+
       let result = -1; // assume it's never found
       if (ship !== "")
       {
@@ -102,42 +103,58 @@ class Ship
                 function(arrayItem)
                 {
                     return arrayItem.name.toUpperCase() == ship.toUpperCase();
-                }
-            );
+                });
+
+                if(result == -1 && newShipList.length >=1)
+                    {
+                        result = newShipList.findIndex(
+                        function(newArrayItem)
+                        {
+                            return newArrayItem.name.toUpperCase() == ship.toUpperCase();
+                        });
+                    }
+            }
         }
-     }
-     else
-     {
-        result = "null";
-     }
-      return result;
+        else
+        {
+            result = "null";
+        }
+
+        return result
+
   }
 
-  addLocalShip(newLocalShip)
+  //purpose : Get the data of ship that are input by the user from the dialog box
+  //return output : ship instance
+  addLocalShip()
   {
-    if (newLocalShip instanceof Ship)
+    let shipName = document.getElementById("shipName").value;
+    let searchResult = this._searchForShip(shipName);
+
+    if (searchResult == -1)  //ship not found
     {
-      let shipName = document.getElementById("shipName").value;
-      let searchResult = this._searchForShip(shipName);
 
-      if (searchResult == -1)
-      {
-        this._newShip.push(newLocalShip);
-      }
+      let ship = new Ship(shipName, maxSpeed, range, description, cost, status, comment);
 
-      else if(searchResult >= 0)
-      {
-        alert(" This name is already registered !!!  ")
-        return null;
-      }
-      else
-      {
-        alert(" Please enter a ship name! ")
-        return null;
-      }
+      return ship;
+    }
+
+    else if(searchResult >= 0)
+    {
+      alert(" This name is already registered !!!  ")
+      return null;
+    }
+
+    else
+    {
+      alert(" Please enter a ship name! ")
+      return null;
     }
   }
 
+  //purpose : convert the data back into a class instance
+  //parameter : shipObject - data object of ship
+  //return output : class instance of ship
   fromData(shipObject)
   {
     this._name = shipObject._name;
@@ -150,23 +167,9 @@ class Ship
 
   }
 
-  fromDataNew(newShipObject)
-  {
-    this._newShip = [];
-
-    for (let i = 0; i < newShipObject._newShip.length; i++)
-    {
-      let ship = new Ship()
-      ship.fromData(newShipObject._newShip[i]);
-      this._newShip.push(ship);
-    }
-  }
-
 }
 
-document.getElementById("hideShipInformation").style.display = "none";
-
-
+/* Functions for page */
 function webServiceRequest(url,data)
 {
   // Build URL parameters from data object.
@@ -198,119 +201,112 @@ function webServiceRequest(url,data)
     document.body.appendChild(script);
 }
 
-let localShip = new Ship()
-let shipListElement = document.getElementById('shipList');
-// global variable to hold the ships information
-let shipList = [];
 
-// Make the API call to the ports API for the data provided below
+let shipsListElement = document.getElementById('shipsList');
+
+// global variable to hold the ships information
+let shipsList = [];   //data array from API
+let shipList = [];    //array with the class instance for api ship data
+let newShipList = []; //array for local ship data
+
+// Make the API call to the ships API for the data provided below
 let shipData = {
 
     callback: "shipResponse"
 };
 webServiceRequest("https://eng1003.monash/api/v1/ships/", shipData);
 
-function shipResponse(shipArray)
+//purpose : response to the API and get th data
+//parameter : shipsArray - an array of ships from API
+//return output : an array with the class instance for ship API data
+function shipResponse(shipsArray)
 {
-    shipList = shipArray;
+    shipsList = shipsArray;
 
-    // List view section heading: ships list
-    let listHTML = "";
-
-    // Generate some HTML table rows for the ships array
-    for (let i = 0; i < shipList.ships.length; i++)
+    for (let i = 0; i < shipsList.ships.length; i++)
     {
-        listHTML += "<tr>";
-        listHTML += "<td>" + shipList.ships[i].name + "</td>";
-        listHTML += "<td>" + shipList.ships[i].maxSpeed + "</td>";
-        listHTML += "<td>" + shipList.ships[i].range + "</td>";
-        listHTML += "<td>" + shipList.ships[i].desc + "</td>";
-        listHTML += "<td>" + shipList.ships[i].cost + "</td>";
-        listHTML += "<td>" + shipList.ships[i].status + "</td>";
-        listHTML += "<td>" + shipList.ships[i].comments + "</td>";
-        listHTML += "</tr>";
+      let shipNameAPI, maxSpeedAPI, rangeAPI, descriptionAPI, costAPI, statusAPI, commentAPI;
+      shipNameAPI = shipsList.ships[i].name;
+      maxSpeedAPI = shipsList.ships[i].maxSpeed;
+      rangeAPI = shipsList.ships[i].range;
+      descriptionAPI = shipsList.ships[i].desc;
+      costAPI = shipsList.ships[i].cost;
+      statusAPI = shipsList.ships[i].status;
+      commentAPI = shipsList.ships[i].comments;
+
+      let shipAPI = new Ship (shipNameAPI, maxSpeedAPI, rangeAPI, descriptionAPI, costAPI, statusAPI, commentAPI);
+      shipList.push(shipAPI);
     }
 
-    // Insert the list view elements into the flights list.
-    shipListElement.innerHTML = listHTML;
-
-}
-
-//PROBLEM
-function newShipResponse()
-{
-    let shipArray = localShip._newShip;
-
-    // List view section heading: ships list
-    let listHTML = "";
-
-    // Generate some HTML table rows for the ships array
-    for (let i = 0; i < shipArray.length; i++)
-    {
-        listHTML += "<tr>";
-        listHTML += "<td>" + shipArray[i].name + "</td>";
-        listHTML += "<td>" + shipArray[i].maxSpeed + "</td>";
-        listHTML += "<td>" + shipArray[i].range + "</td>";
-        listHTML += "<td>" + shipArray[i].description + "</td>";
-        listHTML += "<td>" + shipArray[i].cost + "</td>";
-        listHTML += "<td>" + shipArray[i].status + "</td>";
-        listHTML += "<td>" + shipArray[i].comment + "</td>";
-        listHTML += "</tr>";
-    }
-
-    // Insert the list view elements into the flights list.
-    return listHTML;
-
-}
-
-function shipInformation(shipIndex)
-{
-  let shipInformationTab = document.getElementById("hideShipInformation");
-
-  let listHTML = "";
-
-  listHTML += "<div class=\"mdl-card__title\"><h2 class=\"mdl-card__title-text\">" + "Ship Information" + "</h2></div>"
-  listHTML += "<div class=\"mdl-card__supporting-text\">";
-  listHTML += "<span>" + "Ship Name: " +  shipList.ships[shipIndex].name + "</span><br/>";
-  listHTML += "<span>" + "Max Speed(knots): " +  shipList.ships[shipIndex].maxSpeed + "</span><br/>";
-  listHTML += "<span>" + "Range(km): " +  shipList.ships[shipIndex].range + "</span><br/>";
-  listHTML += "<span>" + "Description: " +  shipList.ships[shipIndex].desc + "</span><br/>";
-  listHTML += "<span>" + "Cost(unit per km): " +  shipList.ships[shipIndex].cost + "</span><br/>";
-  listHTML += "<span>" + "Status: " +  shipList.ships[shipIndex].status + "</span><br/>";
-  listHTML += "<span>" + "Comment: " +  shipList.ships[shipIndex].comments + "</span><br/>";
-
-
-
-  listHTML += "</div>";
-
-  shipInformationTab.innerHTML = listHTML
-
-  if (shipInformationTab.style.display === "none")
-  {
-  shipInformationTab.style.display = "block";
-  }
-  else {
-    shipInformationTab.style.display = "none";
+    // Insert the list view elements into the ship list.
+    shipsListElement.innerHTML = generateShipList();
   }
 
-}
-
-let STORAGE_KEY = "SHIP_INFORMATION"
-
-function storeShipData()
+//purpose : Generate ship name and status list from the ship list
+//return output : a table with ship data from API and local storage
+function generateShipList()
 {
 
-  if (typeof (Storage) !== "undefined")
-  {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(localShip));
-  }
+	let output = "";
 
-  else
-  {
-      alert("localStorage is not supported by current browser!");
-  }
+    //create row for local ship
+     for (let j = 0; j < newShipList.length; j++)
+	   {
+        output += "<tr>"
+        output += "<td onmousedown=\"viewNewShipInfo("+j+")\" class=\"full-width mdl-data-table__cell--non-numeric\">"
+        output += "<b>*NEW SHIP*</b><br><br>"
+        output += "Ship Name: " + newShipList[j].name ;
+        output += "<div class=\"subtitle\">" + "Status: " + newShipList[j].status +"<br><br><b>VIEW</b></div></td></tr>";
+	   }
+
+    //create row for ship from API
+  	for (let i = 0; i < shipList.length; i++)
+  	{
+          output += "<tr>"
+          output += "<td onmousedown=\"viewShipInfo("+i+")\" class=\"full-width mdl-data-table__cell--non-numeric\">"
+          output += "Ship Name: " + shipList[i].name ;
+          output += "<div class=\"subtitle\">" + "Status: " + shipList[i].status +"<br><br><b>VIEW</b></div></td></tr>";
+  	}
+
+    return output
 }
 
+ //purpose : display the information for the selected ship
+ //parameter : shipIndex - index of selected ship
+ //return output : info card with information of the selected ship
+document.getElementById("shipInfoCard").style.display = "none";
+
+function viewShipInfo(shipIndex)
+{
+    document.getElementById("shipInfoCard").style.display = "block";
+  	document.getElementById("shipName").innerText = shipList[shipIndex].name;
+	  document.getElementById("maxSpeed").innerText = shipList[shipIndex].maxSpeed;
+    document.getElementById("range").innerText = shipList[shipIndex].range;
+    document.getElementById("description").innerText = shipList[shipIndex].desc;
+    document.getElementById("cost").innerText = shipList[shipIndex].cost;
+    document.getElementById("status").innerText = shipList[shipIndex].status;
+    document.getElementById("comment").innerText = shipList[shipIndex].comments;
+
+}
+
+//purpose : display the information for the selected local ship
+//parameter : shipIndex - index of selected local ship
+//return output : info card with information of the selected local ship
+function viewNewShipInfo(shipIndex)
+{
+  document.getElementById("shipInfoCard").style.display = "block";
+  document.getElementById("shipName").innerText = newShipList[shipIndex].name;
+  document.getElementById("maxSpeed").innerText = newShipList[shipIndex].maxSpeed;
+  document.getElementById("range").innerText = newShipList[shipIndex].range;
+  document.getElementById("description").innerText = newShipList[shipIndex].desc;
+  document.getElementById("cost").innerText = newShipList[shipIndex].cost;
+  document.getElementById("status").innerText = newShipList[shipIndex].status;
+  document.getElementById("comment").innerText = newShipList[shipIndex].comments;
+
+}
+
+//purpose : Get new ship information from the user
+//return output : Display a dialog box with the input column for ship information
 function addShip()
 {
   let dialogBox = "";
@@ -340,42 +336,83 @@ function addShip()
   });
 }
 
+//global variable to hold the new ships information
+let shipName, maxSpeed, range, description, cost, status, comment;
+
+//purpose : add new ship into the table and store new ship into local storage
+//return output : an array with class instance for local ship data
 function addNewShip()
 {
-  let shipName = document.getElementById("shipName").value;
-  let maxSpeed = document.getElementById("maxSpeed").value;
-  let range = document.getElementById("range").value;
-  let description = document.getElementById("description").value;
-  let cost = document.getElementById("cost").value;
-  let status = document.getElementById("status").value;
-  let comment = document.getElementById("comment").value;
+  shipName = document.getElementById("shipName").value;
+  maxSpeed = document.getElementById("maxSpeed").value;
+  range = document.getElementById("range").value;
+  description = document.getElementById("description").value;
+  cost = document.getElementById("cost").value;
+  status = document.getElementById("status").value;
+  comment = document.getElementById("comment").value;
 
-  let ship = new Ship(shipName, maxSpeed, range, description, cost, status, comment);
-  localShip.addLocalShip(ship)
-  storeShipData()
-  document.getElementById("newShipTable").innerHTML = newShipResponse()
+  let ship = new Ship();
+  let localShip = ship.addLocalShip();
 
+  if (localShip !== null)
+  {
+    newShipList.push(localShip); //push new ship to a new ship list
+    storeShipData(newShipList); //store the ship added recently to local storage
+  }
+    shipsListElement.innerHTML = generateShipList();
 }
 
-function retrieveShipData()
-{
-  let newShipObject = JSON.parse(localStorage.getItem(STORAGE_KEY));
+//local storage
+let STORAGE_KEY = "SHIP_INFORMATION";
 
-  if (newShipObject !== null)
+//purpose : store ship data object into local storage
+//parameter : ship - ship data object
+//return output : ship data is stored in local storage
+function storeShipData(ship)
+{
+  //check that browser support local storage
+  if (typeof (Storage) !== "undefined")
   {
-    localShip.fromDataNew(newShipObject);
-    document.getElementById("newShipTable").innerHTML = newShipResponse()
-    //refresh : code to run on load to display content on page
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(ship));
+  }
+
+  else
+  {
+      alert("localStorage is not supported by current browser!");
   }
 }
 
-retrieveShipData()
+//purpose : Retrive data from local storage and convert to Javascript object
+//parameter : storageKey - key value
+//return output : Data in the form of Javascript oject
+function retrieveShipData(storageKey)
+{
+	if (typeof(Storage) !== "undefined")
+	{
+		return JSON.parse(localStorage.getItem(storageKey));
+	}
+}
 
+/* Global code */
+if (localStorage.length > 0)
+{
+    let shipdata = retrieveShipData(STORAGE_KEY); // Retrive data into new variable
+    for (let i = 0; i < shipdata.length; i++)
+    {
+        let ship = new Ship();
+        ship.fromData(shipdata[i]);// convert data back into instance
+        newShipList.push(ship);
+    }
+    shipsListElement.innerHTML = generateShipList(); //And the page display is updated with the previously "saved" data
+}
+
+//purpose : filter the table
+//return output : Display the column with the keyword that is input in the text box
 function searchForShip() {
   let input, filter, table, tr, td, i, txtValue;
   input = document.getElementById("searchShip");
   filter = input.value.toUpperCase();
-  table = document.getElementById("shipList");
+  table = document.getElementById("shipsList");
   tr = table.getElementsByTagName("tr");
   for (i = 0; i < tr.length; i++) {
       txtValue = tr[i].textContent || tr[i].innerText;
