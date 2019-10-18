@@ -1,5 +1,5 @@
 // mapboxgl.accessToken = 'pk.eyJ1IjoiZ29oc2hld2VpIiwiYSI6ImNrMW9xMzF6djBvem4zY3BnazBpcTEwOXYifQ.u69KawZGLgqA1eyr0GILBw'
-// let map = new  mapboxgl.Map({
+// map = new  mapboxgl.Map({
 //    container: 'bookingMapArea',
 //  center: [44.63, 28.77],
 //  zoom: 1,

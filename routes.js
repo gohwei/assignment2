@@ -278,6 +278,7 @@ function confirmRoute()
   {
     routesStorage.push(routeClass)
     storeRoute(routesStorage)
+    location.reload()
   }
 
 }

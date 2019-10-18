@@ -10,77 +10,29 @@
 
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.1.1/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.1.1/mapbox-gl.css' rel='stylesheet'>
+
+      <style>
+    #bookingMapArea{
+         height:400px;
+         width: 55%;
+         margin-right: 10px;
+         border: 1px solid grey;
+         float:left;
+         margin-left: 10px;
+       }
+       </style>
+
   </head>
 
   <body>
     <!-- Always shows a header, even in smaller screens. -->
-		<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
-		  <header class="mdl-layout__header">
-		    <div class="mdl-layout__header-row">
-		      <!-- Page Title -->
-          <a href="Main.html" class="next">Back</a>
-
-                <span class="mdl-layout-title"  style="font-family: georgia"><b>Booking History</b></span>
-		    </div>
-        </header>
-        <style>
-        #mapArea{
-             height:400px;
-             width: 55%;
-             margin-right: 10px;
-             border: 1px solid grey;
-             float:left;
-             margin-left: 10px;
-           }
-           </style>
-        <main class="mdl-layout__content">
-
-                <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-
-             <main class="mdl-layout__content" style="background-image: url(routes.jpg); background-repeat: no-repeat; background-size: cover; background-position: center; color:white" >
-            <div>
-
-
-
-
-
-
-
-              <div>
 
               <div id= "bookingMapArea" class='page-block'>
 
               </div>
 
 
-              <!-- <figure class="icons">
-                <canvas id="partly-cloudy-night" width="64" height="64"></canvas>
-              </figure>
-              <br> -->
-
-
-
-
-              <!-- link js -->
-
-
-
-
-
-
-        </main>
-        <script>
-          mapboxgl.accessToken = 'pk.eyJ1IjoiZ29oc2hld2VpIiwiYSI6ImNrMW9xMzF6djBvem4zY3BnazBpcTEwOXYifQ.u69KawZGLgqA1eyr0GILBw'
-
-          map = new mapboxgl.Map({
-            container: 'bookingMapArea', // container id
-            style: 'mapbox://styles/gohshewei/ck1uyl2ho08ea1cp3c7uaj6s4', // stylesheet location
-            center: [-74.50, 40], // starting position [lng, lat]
-            zoom: 9 // starting zoom
-          });
-        </script>
-
-        <script src="booking.js.js"></script>
+        <script src="bookingmap.js"></script>
 
 </body>
 
