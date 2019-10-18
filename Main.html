@@ -46,8 +46,7 @@
                               <table class="full-width mdl-data-table mdl-js-data-table mdl-data-table mdl-shadow--2dp">
                                 <h3>Current</h3>
                                 <tbody id = "currentbooking-list">
-                                  <tr> <td onmousedown="popup()" class="full-width mdl-data-table__cell--non-numeric">Ship Name: Bumblebee
-                                    <div class=\"subtitle\">Departure date: 22/9/2019</div></td></tr>
+                                  
                                   <!-- content -->
                                 </tbody>
                               </table><br>
@@ -60,26 +59,7 @@
                                 </tbody>
                               </table>
                           </div>
-                          <div id="routeinfo">
-                            <div>
-                            <button onclick="popup()" id="closeTab">x</button>
-                            <div class="mdl-card__title">
-                              <h2 class="mdl-card__title-text"> Route Information </h2>
-                            </div>
-                          <div class="mdl-card__supporting-text">
-                            <span> Ship name: <label id="studentId"></label></span><br/>
-                            <span> Travel Distance: <label id="fullName"></label></span><br/>
-                            <span> Departure date: <label id="dateOfBirth"></label></span><br/>
-                            <span> From: <label id="gender"></label></span><br/>
-                            <span> To: <label id="address"></label></span><br/>
-                          </div>
-                          <div class="mdl-card__actions mdl-card--border">
-                            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="deleteRoute" onclick="popup()">Remove</a>
-                            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="postponepage" onclick="">Postpone</a>
 
-                          </div>
-                        </div>
-                          </div>
                           <div id="mapAreaBooking" class="page-block"></div>
 
                       </main>
@@ -271,7 +251,7 @@
 
                   <b>Departure Date: </b>
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text"   id="departDate">
+                  <input class="mdl-textfield__input" type="date"   id="departDate">
                   <label class="mdl-textfield__label" for="departDate">Depart at</label>
                         </div>
 
@@ -377,15 +357,27 @@
                         </div>
             			<div id="hiddenDialog"></div>
 
+
+
             			<!-- link js -->
                         <script src="map.js"></script>
                         <script src="routes.js"></script>
                         </div>
+
                       </div>
+
                     </center>
+
+                  </div>
+                  <div id="confirmRouteDiv">
+                  <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick = "confirmRoute()" id="confirmRouteButton">
+                    Confirm
+                  </button>
+                </div>
 
                 </section>
             </main>
-                     </div>
+
+
     </body>
 </html>

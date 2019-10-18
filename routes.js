@@ -1,6 +1,6 @@
 class Route
     {
-        constructor (sourcePort,desPort)
+        constructor (sourcePort,desPort,departureDate)
         {
             this._sourcePort = sourcePort;
             this._desPort = desPort;
@@ -8,8 +8,23 @@ class Route
             // this._distance = distance;
             this._waypoint = [];
             // this._weather = weather;
-            // this._departureDate = departureDate;
+            this._departureDate = departureDate;
 
+        }
+
+        storeWaypoint(waypoints)
+        {
+          this._waypoint.push(waypoints)
+        }
+
+        fromData(routeData)
+        {
+          this._sourcePort = routeData._sourcePort
+          this._desPort = routeData._desPort
+          for (let i = 0; i < routeData._waypoint.length; i++)
+          {
+            this._waypoint.push(routeData._waypoint[i])
+          }
         }
 
 
@@ -19,7 +34,7 @@ class Route
 let srcPort = new Port()
 let wayPointLocation = [];
 let locations
-
+let routeClass = new Route();
 //check object empty
 function isEmpty(obj)
 {
@@ -49,10 +64,13 @@ function searchRoutes()
         console.log(Destiny)
         let searchResultSrc = srcPort._searchForPort(Source);
         let searchResultDstny = srcPort._searchForPort(Destiny);
+
         let portSrc = portList[searchResultSrc];
         let portDstny = portList[searchResultDstny];
-        let newRoute = new Route(portSrc,portDstny);
-        console.log(newRoute);
+        let Date = document.getElementById("departDate").value
+        let newRoute = new Route(portSrc,portDstny,Date);
+        routeClass = newRoute;
+        console.log(routeClass);
         console.log(portDstny.lat,portDstny.lng);
         map.panTo([portSrc.lng,portSrc.lat]);
 
@@ -220,6 +238,9 @@ function addWayPoint()
   if (isEmpty(clickedCoordinates) !== true)
   {
     referenceLength = object.geometry.coordinates.length;
+    let waypointCoor = [clickedCoordinates.lng,clickedCoordinates.lat]
+    routeClass.storeWaypoint(waypointCoor);
+    console.log(routeClass)
     document.getElementById("wayPoint").disabled = true;
   }
   else
@@ -246,4 +267,53 @@ function addWayPoint()
         popup.addTo(map);
       }
 
+}
+
+let routesStorage = [];
+let STORAGE_KEY_ROUTE = "routes";
+
+function confirmRoute()
+{
+  if(confirm("Save this route?"))
+  {
+    routesStorage.push(routeClass)
+    storeRoute(routesStorage)
+  }
+
+}
+
+function storeRoute(route)
+{
+	if(typeof (Storage) !== "undefined")
+	{
+		localStorage.setItem(STORAGE_KEY_ROUTE,JSON.stringify(route)) //The port instance with the new data is uploaded into the localStorage
+	}
+	else
+	{
+		alert("The current browser doesn't support local storage");
+	}
+}
+
+function retrieveRouteData(storageKey)
+{
+	if (typeof(Storage) !== "undefined")
+	{
+		return JSON.parse(localStorage.getItem(storageKey));
+	}
+}
+
+/* Global code */
+if (localStorage.length > 0)
+{
+    let routeData = retrieveRouteData(STORAGE_KEY_ROUTE); // Retrive data into new variable
+
+    if (routeData !== null)
+    {
+    for (let i=0; i< routeData.length; i++)
+        {
+            let getRoute = new Route();
+            getRoute.fromData(routeData[i]);
+            routesStorage.push(getRoute);
+        }
+    }
 }

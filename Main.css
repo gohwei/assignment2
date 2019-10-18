@@ -111,3 +111,11 @@ option{
     margin-left: 20px;
     clear: right ;
 }
+#confirmRouteDiv{
+  vertical-align: bottom;
+  height: 450px;
+}
+
+#confirmRouteButton{
+  top: 80%;
+}
