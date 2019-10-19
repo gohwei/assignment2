@@ -12,24 +12,64 @@
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.1.1/mapbox-gl.css' rel='stylesheet'>
 
       <style>
-    #bookingMapArea{
+      #bookingMapArea{
          height:400px;
          width: 55%;
          margin-right: 10px;
          border: 1px solid grey;
-         float:left;
-         margin-left: 10px;
+         margin-right: auto;
+         top: 15%;
+       }
+       #bookingInfoTable{
+         border: 1px solid ;
+         margin-left: 60%;
+         width: 25%;
+         height: auto;
        }
        </style>
 
+
   </head>
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
+  <header class="mdl-layout__header">
+    <div class="mdl-layout__header-row">
+      <!-- Page Title -->
+      <a href="Main.html" class="next">Back</a>
+            <span class="mdl-layout-title"  style="font-family: georgia"><b>Booking Info</b></span>
+    </div>
+  </div>
+    <!-- Tabs Layout -->
+
+  </header>
 
   <body>
     <!-- Always shows a header, even in smaller screens. -->
 
-              <div id= "bookingMapArea" class='page-block'>
+              <div id= "bookingMapArea" class='page-block'></div>
+
+              <div class="page-content" id="bookingInfoTable">
+                  <table class="full-width mdl-data-table mdl-js-data-table mdl-data-table mdl-shadow--2dp">
+                    <tbody id = "bookingInfo-list">
+
+
+                    </tbody>
+                  </table><br>
+
 
               </div>
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" id="postponeDateTab">
+                <!-- <input class="mdl-textfield__input" type="date"   id="departDate">
+                <div class="mdl-card__actions mdl-card--border">
+                            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="confirmButton" onclick="confirmButton()">Confirm</a>
+                          </div> -->
+                      </div>
+
+              <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick = "postponeRoute()" id="postponeButton">
+                Postpone
+              </button>
+              <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick = "removeRoute()" id="removeButton">
+                Remove
+              </button>
 
 
         <script src="bookingmap.js"></script>

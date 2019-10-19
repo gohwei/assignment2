@@ -7,6 +7,7 @@
 // });
 
 let currentList = document.getElementById("currentbooking-list")
+let globRoutes
 
 function loadRoutes(routesInfo)
 {
@@ -25,9 +26,9 @@ function loadRoutes(routesInfo)
 
 function viewRouteInformation(index)
 {
-
-
+  storeParticularRoute(index)
   location.href = 'bookinghistory.html'
+
 }
 
 function retrieveRouteData(storageKey)
@@ -41,7 +42,7 @@ function retrieveRouteData(storageKey)
 if (localStorage.length > 0)
 {
     let routeDatas = retrieveRouteData("routes"); // Retrive data into new variable
-    console.log(routeDatas)
+    globRoutes = routeDatas;
 
     if (routeDatas !== null)
     {
@@ -50,4 +51,16 @@ if (localStorage.length > 0)
 
     }
 
+}
+
+function storeParticularRoute(routedata)
+{
+  if(typeof (Storage) !== "undefined")
+	{
+		localStorage.setItem("routeIndex",JSON.stringify(routedata)) //The port instance with the new data is uploaded into the localStorage
+	}
+	else
+	{
+		alert("The current browser doesn't support local storage");
+	}
 }

@@ -119,3 +119,17 @@ option{
 #confirmRouteButton{
   top: 80%;
 }
+
+#postponeDateTab{
+  border: 1px solid grey;
+  height: 120px;
+  bottom: 20%;
+  right: 75%;
+  position: fixed;
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 5px;
+}
+
+#confirmButton{
+  float: left;
+}
