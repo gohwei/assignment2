@@ -95,76 +95,82 @@ function searchRoutes()
 
   let Source = document.getElementById("sourcePort").value
   let Destiny = document.getElementById("desPort").value
-
-  let searchResultSrc = srcPort._searchForPort(Source);
-  let searchResultDstny = srcPort._searchForPort(Destiny);
-
-  let portSrc = portList[searchResultSrc];
-  let portDstny = portList[searchResultDstny];
-
   let Date = document.getElementById("departDate").value
-  let newRoute = new Route(portSrc,portDstny,Date);
-  routeClass = newRoute;
-  map.panTo([portSrc.lng,portSrc.lat]);
 
-  locations = [
-    {
-      coordinates: [portSrc.lng,portSrc.lat]
-    },
-    {
-      coordinates: [portDstny.lng,portDstny.lat]
-    }
-  ]
+  if (Source == "" | Destiny == "" | Date =="")
+  {
+    alert("Please fill in all required field including 'From', 'Depart At' and 'Destination'!")
+  }
+  else
+  {
+      let searchResultSrc = srcPort._searchForPort(Source);
+      let searchResultDstny = srcPort._searchForPort(Destiny);
 
-  //polyline
+      let portSrc = portList[searchResultSrc];
+      let portDstny = portList[searchResultDstny];
+
+      let newRoute = new Route(portSrc,portDstny,Date);
+      routeClass = newRoute;
+      map.panTo([portSrc.lng,portSrc.lat]);
+
+      locations = [
+        {
+          coordinates: [portSrc.lng,portSrc.lat]
+        },
+        {
+          coordinates: [portDstny.lng,portDstny.lat]
+        }
+      ]
+
+      //polyline
 
 
-  for(let i = 0; i < locations.length; i++)
-    {
-      object.geometry.coordinates.push(locations[i].coordinates);
-    }
+      for(let i = 0; i < locations.length; i++)
+        {
+          object.geometry.coordinates.push(locations[i].coordinates);
+        }
 
-  map.addSource('geojson', {
-    "type": "geojson",
-    "data": object
-  });
+      map.addSource('geojson', {
+        "type": "geojson",
+        "data": object
+      });
 
-  map.addLayer({
-    id: "routes",
-    type: "line",
-    source: 'geojson',
-    layout: { "line-join": "round", "line-cap": "round" },
-    paint: { "line-color": "#888", "line-width": 6 }
-  })
+      map.addLayer({
+        id: "routes",
+        type: "line",
+        source: 'geojson',
+        layout: { "line-join": "round", "line-cap": "round" },
+        paint: { "line-color": "#888", "line-width": 6 }
+      })
 
-  //popup marker
-  for (let i = 0; i < locations.length; i++)
-    {
-       let location = locations[i];
-        let marker = new mapboxgl.Marker({ "color": "#FF8C00" });
-         marker.setLngLat(location.coordinates);
+    //popup marker
+      for (let i = 0; i < locations.length; i++)
+        {
+           let location = locations[i];
+            let marker = new mapboxgl.Marker({ "color": "#FF8C00" });
+             marker.setLngLat(location.coordinates);
 
-         let popup = new mapboxgl.Popup({ offset: 45});
-          // popup.setText(location.description);
+             let popup = new mapboxgl.Popup({ offset: 45});
+              // popup.setText(location.description);
 
-           marker.setPopup(popup)
+               marker.setPopup(popup)
 
-        // Display the marker.
-         marker.addTo(map);
+            // Display the marker.
+             marker.addTo(map);
 
-        // Display the popup.
-        popup.addTo(map);
+            // Display the popup.
+            popup.addTo(map);
+          }
+
+        map.getSource("geojson").setData(object)
+
+        referenceLength = object.geometry.coordinates.length;
+
+        let summSource = document.getElementById("summSource")
+        let summDestiny = document.getElementById("summDestiny")
+        getWeather(portSrc,summSource)
+        getWeather(portDstny,summDestiny)
       }
-
-      map.getSource("geojson").setData(object)
-
-      referenceLength = object.geometry.coordinates.length;
-
-      let summSource = document.getElementById("summSource")
-      let summDestiny = document.getElementById("summDestiny")
-      getWeather(portSrc,summSource)
-      getWeather(portDstny,summDestiny)
-
 
 }
 
@@ -202,7 +208,7 @@ function getWeather(inputPort,summ)
 
 
     //mouse click show marker on map
-let clickedMarker = new mapboxgl.Marker({"color": "#FF8C00"});
+let clickedMarker = new mapboxgl.Marker({"color": "#FF3333"});
 let clickedCoordinates = {};
 
 
@@ -246,7 +252,7 @@ let clickedCoordinates = {};
             }
             else
             {
-              alert("The distance between waypoint or port too short!")
+              alert("The distance between waypoint or port is either too near or too far apart!")
             }
         }
     });
@@ -283,7 +289,7 @@ function addWayPoint()
   for (let i = 1; i < (object.geometry.coordinates.length - 1); i++)
     {
        let location = locations[i];
-        let marker = new mapboxgl.Marker({ "color": "#FF8C00" });
+        let marker = new mapboxgl.Marker({ "color": "#FF3333" });
          marker.setLngLat(object.geometry.coordinates[i]);
 
          let popup = new mapboxgl.Popup({ offset: 45});
@@ -429,7 +435,7 @@ function checkAppropirateDistance(array)
     let d1 = (R * c1)/1000;
     let d2 = (R * c2)/1000;
 
-    if (d1 <= 50 | d2 <= 100)
+    if (d1 <= 50 | d2 <= 100 | d1 >= 300| d2 >= 300)
     {
       return false
     }
