@@ -7,21 +7,59 @@
 // });
 
 let currentList = document.getElementById("currentbooking-list")
+let futureList = document.getElementById("futurebooking-list")
+let historyList = document.getElementById("history-list")
+
 let globRoutes
+let currentTime = new Date()
+console.log(currentTime.getDay())
 
 function loadRoutes(routesInfo)
 {
-
-  let listHTML = "";
+  console.log(routesInfo)
+  let currentListHTML = "";
+  let futureListHTML = "";
+  let historyListHTML = "";
+  let liveDate = currentTime.getDate();
+  let liveMonth = currentTime.getMonth() + 1;
+  let liveYear = currentTime.getFullYear();
 
   for (var i = 0; i < routesInfo.length; i++)
   {
+    console.log(liveMonth+1)
+    console.log(Number(routesInfo[i]._departureDate.substr(5,2))-liveMonth)
 
-    listHTML += "<tr> <td onmousedown=\"viewRouteInformation("+i+")\" class=\"full-width mdl-data-table__cell--non-numeric\">" + routesInfo[i]._sourcePort._name + " &rarr; " + routesInfo[i]._desPort._name;
-    listHTML += "<div class=\"subtitle\">" + "Depature Date:" + routesInfo[i]._departureDate + "</div></td></tr>";
+    if ( (Number(routesInfo[i]._departureDate.substr(0,4))-liveYear) == 0 && (Number(routesInfo[i]._departureDate.substr(5,2))-liveMonth) == 0 && (Number(routesInfo[i]._departureDate.substr(8,2))-liveDate) == 0)
+    {
+      currentListHTML += "<tr> <td onmousedown=\"viewRouteInformation("+i+")\" class=\"full-width mdl-data-table__cell--non-numeric\">" + routesInfo[i]._sourcePort._name + " &rarr; " + routesInfo[i]._desPort._name;
+      currentListHTML += "<div class=\"subtitle\">" + "Depature Date:" + routesInfo[i]._departureDate + "</div></td></tr>";
+    }
+
+    if ((Number(routesInfo[i]._departureDate.substr(0,4))-liveYear) >= 0 && (Number(routesInfo[i]._departureDate.substr(5,2))-liveMonth) >= 0 )
+    {
+      if ( (Number(routesInfo[i]._departureDate.substr(5,2))-liveMonth) == 0 && (Number(routesInfo[i]._departureDate.substr(8,2))-liveDate) > 0)
+      {
+      futureListHTML += "<tr> <td onmousedown=\"viewRouteInformation("+i+")\" class=\"full-width mdl-data-table__cell--non-numeric\">" + routesInfo[i]._sourcePort._name + " &rarr; " + routesInfo[i]._desPort._name;
+      futureListHTML += "<div class=\"subtitle\">" + "Depature Date:" + routesInfo[i]._departureDate + "</div></td></tr>";
+      }
+      else
+      {
+        historyListHTML += "<tr> <td onmousedown=\"viewRouteInformation("+i+")\" class=\"full-width mdl-data-table__cell--non-numeric\">" + routesInfo[i]._sourcePort._name + " &rarr; " + routesInfo[i]._desPort._name;
+        historyListHTML += "<div class=\"subtitle\">" + "Depature Date:" + routesInfo[i]._departureDate + "</div></td></tr>";
+      }
+    }
+
+    else if  ((Number(routesInfo[i]._departureDate.substr(0,4))-liveYear) < 0)
+    {
+      historyListHTML += "<tr> <td onmousedown=\"viewRouteInformation("+i+")\" class=\"full-width mdl-data-table__cell--non-numeric\">" + routesInfo[i]._sourcePort._name + " &rarr; " + routesInfo[i]._desPort._name;
+      historyListHTML += "<div class=\"subtitle\">" + "Depature Date:" + routesInfo[i]._departureDate + "</div></td></tr>";
+    }
+
   }
 
-  currentList.innerHTML = listHTML
+  historyList.innerHTML = historyListHTML
+  futureList.innerHTML = futureListHTML
+  currentList.innerHTML = currentListHTML
 }
 
 function viewRouteInformation(index)

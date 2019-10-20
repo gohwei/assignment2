@@ -43,6 +43,12 @@
 
                       <main class="mdl-layout__content" style="background-image: url(mainpage.jpg); background-repeat: no-repeat; background-size: cover; background-position: center" >
                           <div class="page-content" >
+                            <table class="full-width mdl-data-table mdl-js-data-table  ">
+                              <h3>Future</h3>
+                              <tbody id="futurebooking-list">
+
+                              </tbody>
+                            </table>
                               <table class="full-width mdl-data-table mdl-js-data-table mdl-data-table mdl-shadow--2dp">
                                 <h3>Current</h3>
                                 <tbody id = "currentbooking-list">
@@ -250,7 +256,7 @@
 
                   <b>Departure Date: </b>
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="date"   id="departDate">
+                  <input class="mdl-textfield__input" type="date"   id="departDate" min="2019-09-06">
                   <label class="mdl-textfield__label" for="departDate">Depart at</label>
                         </div>
 
@@ -369,6 +375,9 @@
 
                   </div>
                   <div id="confirmRouteDiv">
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick="cancelRoute()" id="cancelRouteButton">
+                      Cancel
+                    </button>
                   <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick = "confirmRoute()" id="confirmRouteButton">
                     Confirm
                   </button>

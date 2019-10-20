@@ -21,6 +21,8 @@ class Route
         {
           this._sourcePort = routeData._sourcePort
           this._desPort = routeData._desPort
+          this._departureDate = routeData._departureDate;
+
           for (let i = 0; i < routeData._waypoint.length; i++)
           {
             this._waypoint.push(routeData._waypoint[i])
@@ -280,7 +282,18 @@ function confirmRoute()
     storeRoute(routesStorage)
     location.reload()
   }
+}
 
+
+function cancelRoute()
+{
+  if(confirm("Cancel this route?"))
+  {
+    document.getElementById("sourcePort").value = "";
+    document.getElementById("desPort").value = "";
+    document.getElementById("departDate").value = "";
+
+  }
 }
 
 function storeRoute(route)
