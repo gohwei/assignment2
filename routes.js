@@ -66,7 +66,7 @@ let locations
 let routeClass = new Route();
 let shipChosen = new Ship();
 let darksky = 'https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/';
-let key = "9610451768f0eed3dde6aaa8604ffd41";
+key = "9610451768f0eed3dde6aaa8604ffd41";
 
 //check object empty
 function isEmpty(obj)
@@ -389,14 +389,14 @@ function findShip()
             let lat2 = object.geometry.coordinates[i+1];
             let lon2 = object.geometry.coordinates[i+1];
             let R = 6371e3; // metres
-            let φ1 = toRadians(lat1[0]);
-            let φ2 = toRadians(lat2[0]);
-            let Δφ = toRadians(lat2[0]-lat1[0]);
-            let Δλ = toRadians(lon2[1]-lon1[1]);
+            let lat1toRad = toRadians(lat1[0]);
+            let lat2toRad = toRadians(lat2[0]);
+            let phi = toRadians(lat2[0]-lat1[0]);
+            let lamda = toRadians(lon2[1]-lon1[1]);
 
-            let a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-                    Math.cos(φ1) * Math.cos(φ2) *
-                    Math.sin(Δλ/2) * Math.sin(Δλ/2);
+            let a = Math.sin(phi/2) * Math.sin(phi/2) +
+                    Math.cos(lat1toRad) * Math.cos(lat2toRad) *
+                    Math.sin(lamda/2) * Math.sin(lamda/2);
             let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
             let d = (R * c)/1000;
