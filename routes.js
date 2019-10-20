@@ -88,29 +88,23 @@ let object = {
   };
 
 let referenceLength = object.geometry.coordinates.length
-let portDstny;
 
 function searchRoutes()
 {
-        let Source = document.getElementById("sourcePort").value
-        let Destiny = document.getElementById("desPort").value
-        console.log(Destiny)
-        let searchResultSrc = srcPort._searchForPort(Source);
-        let searchResultDstny = srcPort._searchForPort(Destiny);
-        let portSrc = portList[searchResultSrc];
-        portDstny = portList[searchResultDstny];
-        let newRoute = new Route(portSrc,portDstny);
-        console.log(newRoute);
-        console.log(portDstny.lat,portDstny.lng);
-        map.panTo([portSrc.lng,portSrc.lat]);
+  document.getElementById("wayPoint").disabled = true;
 
-  portSrc = portList[searchResultSrc];
-  portDstny = portList[searchResultDstny];
+  let Source = document.getElementById("sourcePort").value
+  let Destiny = document.getElementById("desPort").value
+
+  let searchResultSrc = srcPort._searchForPort(Source);
+  let searchResultDstny = srcPort._searchForPort(Destiny);
+
+  let portSrc = portList[searchResultSrc];
+  let portDstny = portList[searchResultDstny];
+
   let Date = document.getElementById("departDate").value
-  newRoute = new Route(portSrc,portDstny,Date);
+  let newRoute = new Route(portSrc,portDstny,Date);
   routeClass = newRoute;
-  console.log(routeClass);
-  console.log(portDstny.lat,portDstny.lng);
   map.panTo([portSrc.lng,portSrc.lat]);
 
   locations = [
@@ -166,36 +160,45 @@ function searchRoutes()
 
       referenceLength = object.geometry.coordinates.length;
 
-          let darksky = 'https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/';
-      let key = '9610451768f0eed3dde6aaa8604ffd41';
-      let sourcelatt = portSrc.lat;
-      let sourcelng = portSrc.lng;
-      let api = darksky + key + '/' + sourcelatt + ',' + sourcelng;
-      api = api.concat('?exclude=minutely,hourly,daily&units=si');
-        console.log(api)
-      fetch(api)
-          .then((response)=>{
-              if(response.ok)
-              {
-                  return response.json();
-              }
-              else
-              {
-                  alert("Location unknown. Click the \"Get Current Location\" button")
-              }
-          })
-          .then( (j) =>{
-            document.getElementById("summ").innerHTML =  j.currently.summary;
-
-          })
-          .catch( (err) =>{
-              console.log('Error:', err.message);
-          });
+      let summSource = document.getElementById("summSource")
+      let summDestiny = document.getElementById("summDestiny")
+      getWeather(portSrc,summSource)
+      getWeather(portDstny,summDestiny)
 
 
+}
 
+function getWeather(inputPort,summ)
+{
+    let darksky = 'https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/';
+    let key = '9610451768f0eed3dde6aaa8604ffd41';
+    let sourcelatt = inputPort.lat;
+    let sourcelng = inputPort.lng;
+    let api = darksky + key + '/' + sourcelatt + ',' + sourcelng;
+    api = api.concat('?exclude=minutely,hourly&units=si');
+    console.log(api)
+    fetch(api)
 
-  }
+    .then((response)=>{
+        if(response.ok)
+        {
+            return response.json();
+        }
+        else
+        {
+            alert("Location unknown. Click the \"Get Current Location\" button")
+        }
+      })
+    .then( (j) =>{
+      summ.innerHTML =  j.currently.summary;
+      console.log(j)
+
+      })
+    .catch( (err) =>{
+        console.log('Error:', err.message);
+      });
+
+}
 
 
     //mouse click show marker on map
@@ -205,33 +208,47 @@ let clickedCoordinates = {};
 
     map.on('click', function (e) {
        // gives you coorindates of the location where the map is clicked
+
        clickedCoordinates = e.lngLat.wrap()
-       console.log(clickedCoordinates)
-       document.getElementById("wayPoint").disabled = false;
 
+       if (object.geometry.coordinates.length == 0)
+       {
+         alert("Please add a route!")
+       }
 
+       else
+       {
 	    // add the pop up to the point to map was clicked and
+            if (object.geometry.coordinates.length > referenceLength)
+            {
+              object.geometry.coordinates.pop()
 
-      clickedMarker.setLngLat(clickedCoordinates);
-      //.setHTML(description) // add description to the popup
-      clickedMarker.addTo(map);
+            }
 
-      //to avoid stacking same coordinate
-      if (object.geometry.coordinates.length > referenceLength)
-      {
-        object.geometry.coordinates.pop()
+            if (object.geometry.coordinates.length > 1)
+            {
+              object.geometry.coordinates.pop()
+              object.geometry.coordinates.push([clickedCoordinates.lng,clickedCoordinates.lat])
+              object.geometry.coordinates.push(locations[1].coordinates);
+            }
 
-      }
+            //.setHTML(description) // add description to the popup
 
-      if (object.geometry.coordinates.length > 1)
-      {
-        object.geometry.coordinates.pop()
-        object.geometry.coordinates.push([clickedCoordinates.lng,clickedCoordinates.lat])
-        object.geometry.coordinates.push(locations[1].coordinates);
-      }
-
-      map.getSource("geojson").setData(object)
-
+            let checkDistance = checkAppropirateDistance(object.geometry.coordinates)
+            //to avoid stacking same coordinate
+            if (checkDistance !== false)
+            {
+              document.getElementById("wayPoint").disabled = false;
+              clickedMarker.setLngLat(clickedCoordinates);
+              //.setHTML(description) // add description to the popup
+              clickedMarker.addTo(map);
+              map.getSource("geojson").setData(object)
+            }
+            else
+            {
+              alert("The distance between waypoint or port too short!")
+            }
+        }
     });
 
 
@@ -254,9 +271,11 @@ function addWayPoint()
   {
     referenceLength = object.geometry.coordinates.length;
     document.getElementById("wayPoint").disabled = true;
+    findShip()
   }
   else
   {
+    document.getElementById("wayPoint").disabled = true;
     alert("Please select a location")
   }
 
@@ -378,13 +397,59 @@ function shipRes(shipsArray)
     }
 }
 
-console.log(rangeAPI);
-let totalDistance;
+function checkAppropirateDistance(array)
+{
+
+
+    let lat1 = array[referenceLength-2];
+    let lon1 = array[referenceLength-2];
+    let lat2 = array[referenceLength-1];
+    let lon2 = array[referenceLength-1];
+    let lat3 = array[referenceLength];
+    let lon3 = array[referenceLength];
+    let R = 6371e3; // metres
+    let lat1toRad = toRadians(lat1[0]);
+    let lat2toRad = toRadians(lat2[0]);
+    let phi = toRadians(lat2[0]-lat1[0]);
+    let lamda = toRadians(lon2[1]-lon1[1]);
+
+
+    let lat3toRad = toRadians(lat3[0]);
+    let phi1 = toRadians(lat3[0]-lat2[0]);
+    let lamda1 = toRadians(lon3[1]-lon2[1]);
+
+    let a1 = Math.sin(phi/2) * Math.sin(phi/2) +
+            Math.cos(lat1toRad) * Math.cos(lat2toRad) *
+            Math.sin(lamda/2) * Math.sin(lamda/2);
+    let c1 = 2 * Math.atan2(Math.sqrt(a1), Math.sqrt(1-a1));
+    let a2 = Math.sin(phi1/2) * Math.sin(phi1/2) +
+            Math.cos(lat2toRad) * Math.cos(lat3toRad) *
+            Math.sin(lamda1/2) * Math.sin(lamda1/2);
+    let c2 = 2 * Math.atan2(Math.sqrt(a2), Math.sqrt(1-a2));
+    let d1 = (R * c1)/1000;
+    let d2 = (R * c2)/1000;
+
+    if (d1 <= 50 | d2 <= 100)
+    {
+      return false
+    }
+    else
+    {
+      return true
+    }
+}
+
+
+
+let totalDistance = 0;
+
 function findShip()
 {
+  let Distance = 0;
     for (i=0;i<object.geometry.coordinates.length-1;i++)
         {
             let lat1 = object.geometry.coordinates[i];
+            console.log(lat1)
             let lon1 = object.geometry.coordinates[i];
             let lat2 = object.geometry.coordinates[i+1];
             let lon2 = object.geometry.coordinates[i+1];
@@ -397,18 +462,16 @@ function findShip()
             let a = Math.sin(phi/2) * Math.sin(phi/2) +
                     Math.cos(lat1toRad) * Math.cos(lat2toRad) *
                     Math.sin(lamda/2) * Math.sin(lamda/2);
+                    console.log(a)
             let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
             let d = (R * c)/1000;
-            if (d>=100)
-                {
-                    totalDistance =+ d;
-                }
-            else
-                {
-                    alert("The distance between waypoint and port is too short ")
-                }
+            console.log(d)
+            Distance += d;
+
+
         }
+        totalDistance = Distance;
     console.log(totalDistance);
 
     for (i=0;i<rangeAPI.length;i++)
@@ -423,7 +486,7 @@ function findShip()
         }
 };
 
-let totalCost;
+let totalCost = 0;
 function calculateInfo()
 {
     let availableShips = document.getElementById("avaShips").innerHTML.value;

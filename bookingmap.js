@@ -13,12 +13,46 @@ let bookingInfomartion = document.getElementById("bookingInfo-list");
 let globRouteArray
 let index
 
+let currentTime = new Date()
+let liveDate = currentTime.getDate();
+let liveMonth = currentTime.getMonth() + 1;
+let liveYear = currentTime.getFullYear();
+let currentDate
+
+if (liveMonth < 10)
+{
+  currentDate = liveYear.toString() + "0" + liveMonth.toString() + liveDate.toString();
+}
+else
+{
+  currentDate = liveYear.toString() + liveMonth.toString() + liveDate.toString();
+}
+
+console.log(currentDate)
+
+function checkDate()
+{
+  let setDate = globRouteArray[index]._departureDate.substr(8,2)
+  let setMonth = globRouteArray[index]._departureDate.substr(5,2)
+  let setYear = globRouteArray[index]._departureDate.substr(0,4)
+  let pastDate = setYear + setMonth + setDate;
+  console.log(pastDate)
+  console.log((Number(pastDate) - Number(currentDate)))
+  if ( (Number(pastDate) - Number(currentDate)) <= 0 )
+  {
+    document.getElementById("postponeButton").disabled = true
+  }
+
+}
+
+
 function postponeRoute()
 {
   let maxLimiteDateString = (globRouteArray[index]._departureDate).slice(0,5)
   let setDate = Number(globRouteArray[index]._departureDate.substr(8,2))
   let setMonth = Number(globRouteArray[index]._departureDate.substr(5,2))
   let setYear = Number(globRouteArray[index]._departureDate.substr(0,4))
+
 
   let monthDays
   switch (setMonth) {
@@ -259,6 +293,7 @@ if (localStorage.length > 0)
     {
 
           loadRouteInfo(routeIndex);
+          checkDate();
 
     }
 

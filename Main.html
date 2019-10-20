@@ -326,8 +326,15 @@
                         <h5><b>Weather condition</b></h5>
                         <tr>
                           <!-- class "mdl-data-table__cell--non-numeric", align values to left -->
-                            <td class="mdl-data-table__cell--non-numeric"><b>Summary</b></td>
-                          <td id = 'summ'>Cloudy and stormy</td>
+                            <td class="mdl-data-table__cell--non-numeric"><b>Summary Source</b></td>
+                          <td id = 'summSource'>Cloudy and stormy</td>
+
+                        </tr>
+
+                        <tr>
+                          <!-- class "mdl-data-table__cell--non-numeric", align values to left -->
+                            <td class="mdl-data-table__cell--non-numeric"><b>Summary Destiny</b></td>
+                          <td id = 'summDestiny'>Cloudy and stormy</td>
 
                         </tr>
 
@@ -375,7 +382,7 @@
                     <div>
                     <b>Available ships </b>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                      <select class="mdl-textfield__input" id="avaShips" name="avaShips">
+                      <select class="mdl-textfield__input" id="avaShips" name="avaShips" onchange="calculateInfo()">
                         <option></option>
                       </select>
                       <label class="mdl-textfield__label" for="octane">Ships</label>

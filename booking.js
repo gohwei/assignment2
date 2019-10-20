@@ -57,6 +57,19 @@ function loadRoutes(routesInfo)
 
   }
 
+  if (currentListHTML == "")
+  {
+    currentListHTML = "<tr> <td class=\"full-width mdl-data-table__cell--non-numeric\">" + "No ongoing routes at the moment" + "</td></tr>";
+  }
+  if (futureListHTML == "")
+  {
+    futureListHTML = "<tr> <td class=\"full-width mdl-data-table__cell--non-numeric\">" + "No scheduled routes at the moment" + "</td></tr>";
+  }
+  if (historyListHTML == "")
+  {
+    historyListHTML = "<tr> <td class=\"full-width mdl-data-table__cell--non-numeric\">" + "No historical routes at the moment" + "</td></tr>";
+  }
+
   historyList.innerHTML = historyListHTML
   futureList.innerHTML = futureListHTML
   currentList.innerHTML = currentListHTML
