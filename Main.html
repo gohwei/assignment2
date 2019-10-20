@@ -373,19 +373,28 @@
 
                     </center>
                     <div>
-                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick = "calculateInfo()" id="calculateInfoButton">
-                    Calculate Informations
-                  </button>
+                    <b>Available ships </b>
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                      <select class="mdl-textfield__input" id="avaShips" name="avaShips">
+                        <option></option>
+                      </select>
+                      <label class="mdl-textfield__label" for="octane">Ships</label>
                     </div>
-                  <div id="confirmRouteDiv">
-
-                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick="cancelRoute()" id="cancelRouteButton">
-                      Cancel
-                    </button>
-                  <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick = "confirmRoute()" id="confirmRouteButton">
-                    Confirm
-                  </button>
-                </div>
+                        <div>
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick = "calculateInfo()" id="calculateInfoButton">
+                        Calculate Informations
+                      </button>
+                        </div>
+                        <br><br>
+                      <div id="confirmRouteDiv">
+                      <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick = "confirmRoute()" id="confirmRouteButton">
+                        Confirm
+                      </button>
+                      <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick="cancelRoute()" id="cancelRouteButton">
+                        Cancel
+                      </button>
+                        </div>
+                      </div>
 
                 </section>
             </main>
