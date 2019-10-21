@@ -1,3 +1,4 @@
+"use strict"
 class Ship
 {
   constructor(name, maxSpeed, range, description, cost, status, comment)
@@ -394,7 +395,7 @@ function retrieveShipData(storageKey)
 }
 
 /* Global code */
-if (localStorage.length > 0)
+if (localStorage.getItem(STORAGE_KEY) !== null)
 {
     let shipdata = retrieveShipData(STORAGE_KEY); // Retrive data into new variable
     for (let i = 0; i < shipdata.length; i++)

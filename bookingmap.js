@@ -1,4 +1,4 @@
-
+"use strict"
 mapboxgl.accessToken = 'pk.eyJ1Ijoic2Ftd29uZzEzOSIsImEiOiJjazB1dGZ5OHcwcnd5M2lsYTRqNG5ycm9rIn0.7219ikKXH6Z6tixAlsr5mg';
 
 let bookMap = new  mapboxgl.Map({
@@ -18,7 +18,6 @@ let liveDate = currentTime.getDate();
 let liveMonth = currentTime.getMonth() + 1;
 let liveYear = currentTime.getFullYear();
 let currentDate
-
 if (liveMonth < 10)
 {
   currentDate = liveYear.toString() + "0" + liveMonth.toString() + liveDate.toString();
@@ -27,8 +26,6 @@ else
 {
   currentDate = liveYear.toString() + liveMonth.toString() + liveDate.toString();
 }
-
-console.log(currentDate)
 
 function checkDate()
 {
@@ -41,18 +38,19 @@ function checkDate()
   if ( (Number(pastDate) - Number(currentDate)) <= 0 )
   {
     document.getElementById("postponeButton").disabled = true
+    document.getElementById("removeButton").disabled = true
+
   }
 
 }
-
-
+//purpose : allow user to postpone the start date of a route
+//return output :
 function postponeRoute()
 {
   let maxLimiteDateString = (globRouteArray[index]._departureDate).slice(0,5)
   let setDate = Number(globRouteArray[index]._departureDate.substr(8,2))
   let setMonth = Number(globRouteArray[index]._departureDate.substr(5,2))
   let setYear = Number(globRouteArray[index]._departureDate.substr(0,4))
-
 
   let monthDays
   switch (setMonth) {
@@ -113,7 +111,6 @@ function postponeRoute()
   console.log(typeof minLimitDate)
 
 
-
   let listHTML = "<input class=\"mdl-textfield__input\" type=\"date\" id=\"departDate\" max=\""+maxLimitDate+"\" min=\""+minLimitDate+"\">"
   listHTML += "<div class=\"mdl-card__actions mdl-card--border\">"
   listHTML += "<a class=\"mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect\" id=\"confirmButton\" onclick=\"confirmButton()\">" + "Confirm" + "</a></div>"
@@ -139,7 +136,8 @@ function febDays(setYear)
   }
 }
 
-
+//purpose : confirm user wishes to postpone route
+//return output : new departure date is updated
 function confirmButton()
 {
   let postponeDate = document.getElementById("departDate").value
@@ -147,24 +145,26 @@ function confirmButton()
   console.log(postponeDate)
   if(postponeDate !== "")
   {
-    if (confirm("Postpone Departure date?"))
+    if (confirm("Are you sure you want to postpone departure date?"))
     {
       globRouteArray[index]._departureDate = postponeDate;
       storeRoute(globRouteArray)
-      alert("The departure date has been update!")
-
+      alert("The departure date has been updated!")
     }
   }
   else
   {
     alert("Please select a date")
+    document.getElementById("postponeDateTab").style.display = "none";
+
   }
 }
 
-
+//purpose : remove route by first confirming user wishes to do so
+//return output : route is removed from local storage
 function removeRoute()
 {
-  if(confirm("Delete this Route?"))
+  if(confirm("Are you sure you want to delete this route?"))
   {
     globRouteArray.splice(index,1)
     storeRoute(globRouteArray)
@@ -179,11 +179,19 @@ function loadRouteInfo(index)
 {
   let routeArray = globRouteArray[index]
   let listHTML = "";
-  listHTML += "<tr> <td class=\"full-width mdl-data-table__cell--non-numeric\">" + "Source Port: " + routeArray._sourcePort._name + "</td></tr>"
-  listHTML += "<tr> <td class=\"full-width mdl-data-table__cell--non-numeric\">" + "Destination: " + routeArray._desPort._name + "</td></tr>"
-  listHTML += "<tr> <td class=\"full-width mdl-data-table__cell--non-numeric\">" + "Depature Date:" + routeArray._departureDate + "</td></tr>";
+  listHTML += "<tr> <td class=\"full-width mdl-data-table__cell--non-numeric\" bgcolor=\"#546e7a\">" + "Source Port: " + routeArray._sourcePort._name + "</td></tr>"
+  listHTML += "<tr> <td class=\"full-width mdl-data-table__cell--non-numeric\" bgcolor=\"#546e7a\">" + "Destination: " + routeArray._desPort._name + "</td></tr>"
+  listHTML += "<tr> <td class=\"full-width mdl-data-table__cell--non-numeric\" bgcolor=\"#546e7a\">" + "Depature Date: " + routeArray._departureDate + "</td></tr>";
+  listHTML += "<tr> <td class=\"full-width mdl-data-table__cell--non-numeric\" bgcolor=\"#546e7a\">" + "Travel Distance: " + routeArray._distance.toFixed(2) + "km" + "</td></tr>";
+  listHTML += "<tr> <td class=\"full-width mdl-data-table__cell--non-numeric\" bgcolor=\"#546e7a\">" + "Cost: " + routeArray._cost.toFixed(2) + "</td></tr>";
+  listHTML += "<tr> <td class=\"full-width mdl-data-table__cell--non-numeric\" bgcolor=\"#546e7a\">" + "Ship Name: " + routeArray._selectedShip._name + "</td></tr>";
+
+
+
 
   bookingInfomartion.innerHTML = listHTML
+
+
 
 
 }
@@ -196,6 +204,7 @@ function addPolyline()
 {
   let routeArray = globRouteArray[index];
   console.log(routeArray)
+  let src2Dest = []
 
     let object = {
         type: "Feature",
@@ -206,11 +215,9 @@ function addPolyline()
         }
       };
 
-
-
-
-
     		object.geometry.coordinates.push([routeArray._sourcePort._lng,routeArray._sourcePort._lat])
+        src2Dest.push([routeArray._sourcePort._lng,routeArray._sourcePort._lat])
+        src2Dest.push([routeArray._desPort._lng,routeArray._desPort._lat])
 
         for (var i = 0; i < routeArray._waypoint.length; i++)
         {
@@ -234,10 +241,31 @@ function addPolyline()
           paint: { "line-color": "#888", "line-width": 6 }
         })
 
-        for (let i = 0; i < object.geometry.coordinates.length; i++)
+      for (var i = 0; i < src2Dest.length; i++)
+      {
+
+        let location = src2Dest[i];
+         let marker = new mapboxgl.Marker({ "color": "#FF8C00" });
+          marker.setLngLat(location);
+
+          let popup = new mapboxgl.Popup({ offset: 45});
+           // popup.setText(location.description);
+
+            marker.setPopup(popup)
+
+         // Display the marker.
+          marker.addTo(bookMap);
+
+         // Display the popup.
+         popup.addTo(bookMap);
+         }
+
+        if (object.geometry.coordinates.length > 2)
+        {
+        for (let i = 1; i < object.geometry.coordinates.length-1; i++)
           {
              let location = object.geometry.coordinates[i];
-              let marker = new mapboxgl.Marker({ "color": "#FF8C00" });
+              let marker = new mapboxgl.Marker({ "color": "#FF3333" });
                marker.setLngLat(location);
 
             	 let popup = new mapboxgl.Popup({ offset: 45});
@@ -251,6 +279,7 @@ function addPolyline()
             	// Display the popup.
             	popup.addTo(bookMap);
             }
+          }
 
             bookMap.getSource("geojson").setData(object)
 
@@ -258,6 +287,9 @@ function addPolyline()
 
     }
 
+//purpose : store route data object into local storage
+//parameter : route - route data object
+//return output : route data is stored in local storage
 function storeRoute(route)
 {
 	if(typeof (Storage) !== "undefined")
@@ -270,6 +302,9 @@ function storeRoute(route)
 	}
 }
 
+//purpose : Retrive data from local storage and convert to Javascript object
+//parameter : storageKey - key value
+//return output : Data in the form of Javascript object
 function retrieveRouteData(storageKey)
 {
 	if (typeof(Storage) !== "undefined")
@@ -278,11 +313,11 @@ function retrieveRouteData(storageKey)
 	}
 }
 
+/* Global code */
 if (localStorage.length > 0)
 {
     let routeDatas = retrieveRouteData("routes"); // Retrive data into new variable
     globRouteArray = routeDatas;
-
 }
 
 if (localStorage.length > 0)
@@ -291,10 +326,8 @@ if (localStorage.length > 0)
     index = routeIndex
     if (routeIndex !== null)
     {
-
           loadRouteInfo(routeIndex);
           checkDate();
-
     }
 
 }

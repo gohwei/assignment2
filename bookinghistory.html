@@ -11,39 +11,20 @@
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.1.1/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.1.1/mapbox-gl.css' rel='stylesheet'>
 
-      <style>
-      #bookingMapArea{
-         height:400px;
-         width: 55%;
-         margin-right: 10px;
-         border: 1px solid grey;
-         margin-right: auto;
-         top: 15%;
-       }
-       #bookingInfoTable{
-         border: 1px solid ;
-         margin-left: 60%;
-         width: 25%;
-         height: auto;
-       }
-       </style>
-
-
   </head>
   <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
   <header class="mdl-layout__header">
     <div class="mdl-layout__header-row">
       <!-- Page Title -->
       <a href="Main.html" class="next">Back</a>
-            <span class="mdl-layout-title"  style="font-family: georgia"><b>Booking Info</b></span>
+            <span class="mdl-layout-title" id ="bookingInfoTitle"><b>&nbsp;&nbsp;Booking Info</b></span>
     </div>
+      </header>
   </div>
-    <!-- Tabs Layout -->
 
-  </header>
-
-  <body>
+  <body id ="bookingInfoBackground">
     <!-- Always shows a header, even in smaller screens. -->
+
 
               <div id= "bookingMapArea" class='page-block'></div>
 

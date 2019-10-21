@@ -1,3 +1,4 @@
+"use strict"
 class Port
 {
   constructor(name, country, type, size, locprecision, lat, lng)
@@ -247,7 +248,7 @@ document.getElementById("portInfoCard").style.display = "none";
 function viewPortInfo(portIndex)
 {
   document.getElementById("portInfoCard").style.display = "block";
-	document.getElementById("portName").innerText = portList[portIndex].name;
+	document.getElementById("portNameCard").innerText = portList[portIndex].name;
 	document.getElementById("country").innerText = portList[portIndex].country;
   document.getElementById("type").innerText = portList[portIndex].type;
   document.getElementById("size").innerText = portList[portIndex].size;
@@ -263,7 +264,7 @@ function viewPortInfo(portIndex)
 function viewNewPortInfo(portIndex)
 {
   document.getElementById("portInfoCard").style.display = "block";
-	document.getElementById("portName").innerText = newPortList[portIndex].name;
+	document.getElementById("portNameCard").innerText = newPortList[portIndex].name;
 	document.getElementById("country").innerText = newPortList[portIndex].country;
   document.getElementById("type").innerText = newPortList[portIndex].type;
   document.getElementById("size").innerText = newPortList[portIndex].size;
@@ -365,7 +366,7 @@ function addPort(portInfo)
 };
 
 // local storage
-let key ="port";
+let portKey ="port";
 
 //purpose : store port data object into local storage
 //parameter : port - port data object
@@ -374,7 +375,7 @@ function storeDataToLS(port)
 {
 	if(typeof (Storage) !== "undefined")
 	{
-		localStorage.setItem(key,JSON.stringify(port)) //The port instance with the new data is uploaded into the localStorage
+		localStorage.setItem(portKey,JSON.stringify(port)) //The port instance with the new data is uploaded into the localStorage
 	}
 	else
 	{
@@ -394,9 +395,9 @@ function retrieveDataFromLS(storageKey)
 }
 
 /* Global code */
-if (localStorage.length > 0)
+if (localStorage.getItem(portKey) !== null)
 {
-    let portdata = retrieveDataFromLS(key); // Retrive data into new variable
+    let portdata = retrieveDataFromLS(portKey); // Retrive data into new variable
     for (let i=0; i< portdata.length; i++)
         {
             let port = new Port();
@@ -423,3 +424,6 @@ function search() {
       }
     }
   }
+
+
+

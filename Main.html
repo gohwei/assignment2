@@ -10,6 +10,7 @@
 
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.1.1/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.1.1/mapbox-gl.css' rel='stylesheet'>
+    <link rel="shortcut icon" href="">
   </head>
   <body>
     <!-- Always shows a header, even in smaller screens. -->
@@ -21,17 +22,12 @@
 		    </div>
 		    <!-- Tabs Layout -->
 		    <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
-		      <a href="#mainMenuTab" class="mdl-layout__tab is-active">My Routes</a>
+		      <a href="#mainMenuTab" class="mdl-layout__tab is-active">Main Page</a>
 		      <a href="#shipsTab" class="mdl-layout__tab">Ships</a>
                 <a href="#portsTab" class ="mdl-layout__tab">Ports</a>
                 <a href="#routesTab" class= "mdl-layout__tab">Booking</a>
 	      	</div>
 		  </header>
-        <style>
-            /*main {
-               background-image :
-            }*/
-        </style>
 
         <div id="hiddenDialog"></div>
 
@@ -41,51 +37,59 @@
                 <section class = "mdl-layout__tab-panel is-active" id = "mainMenuTab">
                   <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
 
-                      <main class="mdl-layout__content" style="background-image: url(mainpage.jpg); background-repeat: no-repeat; background-size: cover; background-position: center" >
-                          <div class="page-content" >
+                      <main class="mdl-layout__content" id ="mainpagebackground" >
+                        <div class="page-content" >
+                            <center>
+                            <h1>SHIP US SAFE</h1>
+                            <h5 id="planjourney">Plan Your Journey Now</h5>
+                            <p>By proceeding to the Booking Tab</p>
+                            </center>
+                            <br><hr>
+                            <h2>My Routes</h2>
                             <table class="full-width mdl-data-table mdl-js-data-table  ">
                               <h3>Future</h3>
                               <tbody id="futurebooking-list">
 
                               </tbody>
+                            </table><br>
+                            <table class="full-width mdl-data-table mdl-js-data-table mdl-data-table mdl-shadow--2dp">
+                              <h3>Current</h3>
+                              <tbody id = "currentbooking-list">
+
+                                <!-- content -->
+                              </tbody>
+                            </table><br>
+
+                            <table class="full-width mdl-data-table mdl-js-data-table ">
+                              <h3>History</h3>
+                              <tbody id="history-list">
+
+                              </tbody>
                             </table>
-                              <table class="full-width mdl-data-table mdl-js-data-table mdl-data-table mdl-shadow--2dp">
-                                <h3>Current</h3>
-                                <tbody id = "currentbooking-list">
+                        </div>
 
-                                  <!-- content -->
-                                </tbody>
-                              </table><br>
-
-                              <table class="full-width mdl-data-table mdl-js-data-table  ">
-                                <h3>History</h3>
-                                <tbody id="history-list">
-
-                                </tbody>
-                              </table>
-                          </div>
-
+                          <div id="mapAreaBooking" class="page-block"></div>
 
                       </main>
 
                       </div>
 
-                      <script src="booking.js"></script>
+                      <script src="bookinghistory.js"></script>
                 </section>
+
 
                 <!-- Ships tab -->
                 <section class= "mdl-layout__tab-panel" id="shipsTab">
-                  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header" id="one">
+                  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
 
-                      <main class="mdl-layout__content" style="background-image: url(ship.jpg); background-repeat: no-repeat; background-size: cover; background-position: center; color:white" >
+                      <main class="mdl-layout__content" id ="shipBackground" >
                 <!-- ENTER SHIPS CODES HERE -->
                 <div>
                   <a name="top"></a>
                   <div class = "page-content">
                       <div class="mdl-grid">
                           <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-phone">
-                            <h2 style="font-family: georgia">Available Ship:</h2>
-
+                            <h2>Available Ship:</h2>
 
                     <!-- Expandable Textfield -->
                       <form action="#">
@@ -128,10 +132,10 @@
                                   <span onclick="document.getElementById('shipInfoCard').style.display='none'" class="button-display-topright">&times;</span>
                                   <h2 class="mdl-card__title-text">Ship Details Information </h2>
                               </div>
-                              <div class="mdl-card__supporting-text" style="font-size: 18px; line-height: 22px;">
+                              <div class="mdl-card__supporting-text" id ="shipContent">
                               <form action="#">
                                 <div>
-                                  <span> <b>Name: <label id="name"></label></b></span><br/>
+                                  <span> <b>Name: <label id="shipName"></label></b></span><br/>
                                   <span> Max Speed (knots): <label id="maxSpeed"></label></span><br/>
                                   <span> Range (km): <label id="range"></label></span><br/>
                                   <span> Description: <label id="description"></label></span><br/>
@@ -146,20 +150,28 @@
 
                     <!-- link js -->
                     <script src="ship.js"></script>
-                  </div>
-                      </main></div></section>
+                          </div>
+                       </div>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                    </main>
+                    </div>
+                    </section>
 
                 <!-- Ports tab -->
-                <section class = "mdl-layout__tab-panel" id = "portsTab" >
+                <section class = "mdl-layout__tab-panel" id = "portsTab">
                 <!-- ENTER PORTS CODES HERE -->
                 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
 
-                 <main class="mdl-layout__content" style="background-image: url(port.jpg); background-repeat: no-repeat; background-size: cover; background-position: center; color:white" >
-                <a name="top"></a>
+                 <main class="mdl-layout__content" id ="portBackground">
+                <a name="portTop"></a>
                 <div class = "page-content">
                     <div class="mdl-grid">
                         <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-phone">
-                          <h2 style="font-family: georgia">Available Ports:</h2>
+                          <h2>Available Ports:</h2>
                           <!-- Expandable Textfield -->
                             <form action="#">
                               <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable ">
@@ -189,42 +201,41 @@
                         </button>
                       </div>
                         <br>
-                        <a href="#top">Back to Top</a>
+                        <a href="#portTop">Back to Top</a>
                             <!-- Column for display selected port information -->
                          <div id = "portInfo">
                            	<div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-phone">
                       			<div class="mdl-grid">
                       				<div class="mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
-                                            <div class="mdl-card mdl-shadow--4dp fill40" id="portInfoCard">
-                                                <div class="mdl-card__title">
-                                                    <span onclick="document.getElementById('portInfoCard').style.display='none'" class="button-display-topright">&times;</span>
-                                                    <h2 class="mdl-card__title-text"> Port Details Information </h2>
-                                                </div>
-                                                <div class="mdl-card__supporting-text" style="font-size: 18px; line-height: 22px;">
-                      							<form action="#">
-                      								<div>
-                                                    <span> <b>Name: <label id="name"></label></b></span><br/>
-                                                    <span> Country: <label id="country"></label></span><br/>
-                                                    <span> Type: <label id="type"></label></span><br/>
-                                                    <span> Size: <label id="size"></label></span><br/>
-                                                    <span> Location Precision: <label id="locPrecision"></label></span><br/>
-                                                    <span> Latitude: <label id="lat"></label></span><br/>
-                                                    <span> Longitude: <label id="lng"></label></span><br/>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            </div>
-                                         </div>
-
-                                        <!-- link js -->
-                                        <script src="port.js"></script>
-                                        <script src="webServiceRequest.js"></script>
+                                <div class="mdl-card mdl-shadow--4dp fill40" id="portInfoCard">
+                                    <div class="mdl-card__title">
+                                        <span onclick="document.getElementById('portInfoCard').style.display='none'" class="button-display-topright">&times;</span>
+                                        <h2 class="mdl-card__title-text"> Port Details Information </h2>
+                                    </div>
+                                    <div class="mdl-card__supporting-text" id = "portContent" >
+						                     <form action="#">
+    								                 <div>
+                                        <span> <b>Name: <label id="portNameCard"></label></b></span><br/>
+                                        <span> Country: <label id="country"></label></span><br/>
+                                        <span> Type: <label id="type"></label></span><br/>
+                                        <span> Size: <label id="size"></label></span><br/>
+                                        <span> Location Precision: <label id="locPrecision"></label></span><br/>
+                                        <span> Latitude: <label id="lat"></label></span><br/>
+                                        <span> Longitude: <label id="lng"></label></span><br/>
+                                        </div>
+                                    </form>
+                                 </div>
                                 </div>
-                            </div>
+                             </div>
 
+                              <!-- link js -->
+                              <script src="port.js"></script>
+                              <script src="webServiceRequest.js"></script>
+                            </div>
+                          </div>
                         </div>
-                    </div>
-                    </div>
+                      </div>
+                     </div>
                     </div>
                     </main>
                     </div>
@@ -233,73 +244,54 @@
 
 
                 <!-- Routes tab -->
-                <section class ="mdl-layout__tab-panel" id="routesTab" >
+                <section class ="mdl-layout__tab-panel" id="routesTab">
                     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
 
-                 <main class="mdl-layout__content" style="background-image: url(routes.jpg); background-repeat: no-repeat; background-size: cover; background-position: center; color:white" >
+                 <main class="mdl-layout__content" id ="bookingBackground" >
                 <div>
 
                 <!-- ENTER ROUTES CODES HERE -->
                     <center>
-
-                <center>
-                    <center>
-
                     <div class="page-content">
                         <div>
                         <b>Source port: </b>
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text"  id="sourcePort">
-                            <label class="mdl-textfield__label" for="sourcePort">From</label>
-                        </div>
+                            <select class="mdl-textfield__input" id="sourcePort" name="sourcePort">
+                              <option></option>
+                            </select>
+                            <label class="mdl-textfield__label" id ="label" for="octane">Ports</label>
+                          </div>
 
 
                   <b>Departure Date: </b>
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="date"   id="departDate" min="2019-09-06">
-                  <label class="mdl-textfield__label" for="departDate">Depart at</label>
-                        </div>
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="date"   id="departDate">
+                    <label class="mdl-textfield__label" for="departDate"></label>
+                  </div>
 
                 <b>Destination port: </b>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input class="mdl-textfield__input" type="text"  id="desPort">
-                            <label class="mdl-textfield__label" for="desPort">Destination</label>
+                        <select class="mdl-textfield__input" id="desPort" name="desPort">
+                          <option></option>
+                        </select>
+                        <label class="mdl-textfield__label" for="octane" id ="label">Ports</label>
                     </div>
 
 
-
                 <!-- Raised disabled button -->
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick = 'searchRoutes()'>
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick = "searchRoutes()">
                     Search routes
                 </button>
+
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick = "addPortForm()">
+                          Add port
+                        </button>
                      </div>
                         <br><hr>
 
 
                   <div>
                   <head>
-		          <style type="text/css">
-                     #table-weather{
-                                    width:100%;
-                                    border-collapse: collapse;
-                      }
-                     #mapArea{
-                          height:400px;
-                          width: 55%;
-                          margin-right: 10px;
-                          border: 1px solid grey;
-                          float:left;
-                          margin-left: 10px;
-                        }
-                     #contentArea{
-                          max-width: 45%;
-                          float: left;
-                          height:400px;
-                          margin-left: 20px;
-                         clear: right ;
-                        }
-
-                    </style>
                 </head>
                   <div id='mapArea' class='page-block'>
                     <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick="addWayPoint()" data-upgraded=",MaterialButton" id="wayPoint">
@@ -310,11 +302,11 @@
                     <canvas id="partly-cloudy-night" width="64" height="64"></canvas>
                   </figure>
                   <br> -->
-                  <div id='contentArea'>
+                  <div id="contentArea">
                       <a href= "https://darksky.net/poweredby/">Powered by Dark Sky</a>
                     <!-- display the icon here -->
 
-                    <div id='outputArea'>
+                    <div id="table-weather">
                       <!-- table to display weather-->
                     <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
                       <thead>
@@ -326,32 +318,13 @@
                         <h5><b>Weather condition</b></h5>
                         <tr>
                           <!-- class "mdl-data-table__cell--non-numeric", align values to left -->
-                            <td class="mdl-data-table__cell--non-numeric"><b>Summary Source</b></td>
-                          <td id = 'summSource'>Cloudy and stormy</td>
-
+                            <td class="mdl-data-table__cell--non-numeric"><b>Summary at source port</b></td>
+                          <td id = "summ"></td>
                         </tr>
-
-                        <tr>
+                          <tr>
                           <!-- class "mdl-data-table__cell--non-numeric", align values to left -->
-                            <td class="mdl-data-table__cell--non-numeric"><b>Summary Destiny</b></td>
-                          <td id = 'summDestiny'>Cloudy and stormy</td>
-
-                        </tr>
-
-                        <!-- Row 2 -->
-                        <tr>
-                          <!-- class "mdl-data-table__cell--non-numeric", align values to left -->
-                            <td class="mdl-data-table__cell--non-numeric"><b>Nearest storm distance</b></td>
-                          <td id ='storm'></td>
-
-                        </tr>
-
-                        <!-- Row 3 -->
-                        <tr>
-                          <!-- class "mdl-data-table__cell--non-numeric", align values to left -->
-                            <td class="mdl-data-table__cell--non-numeric"><b>Wind direction</b></td>
-                          <td id ='wind'></td>
-
+                            <td class="mdl-data-table__cell--non-numeric"><b>Summary at destination port</b></td>
+                          <td id = "summ2"></td>
                         </tr>
 
                       </tbody>
@@ -362,52 +335,46 @@
                 <!-- Simple Select -->
                       <br/>
             			<div>
-            				<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick = "findShip()">
-            					Find ship
-            				</button>
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick = "addShip()">
+                        Add Ship
+                    </button>
             			</div>
-                        </div>
-            			<div id="hiddenDialog"></div>
-
-
-
-            			<!-- link js -->
-                        <script src="map.js"></script>
-                        <script src="routes.js"></script>
-                        </div>
-
+                      <div>
+                      <b>Available ships: </b>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label ">
+                        <select class="mdl-textfield__input" id="avaShips" name="avaShips" onchange="calculateInfo()">
+                          <option></option>
+                        </select>
+                        <label class="mdl-textfield__label" for="octane" id ="label">Ships</label>
                       </div>
 
-                    </center>
-                    <div>
-                    <b>Available ships </b>
-                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                      <select class="mdl-textfield__input" id="avaShips" name="avaShips" onchange="calculateInfo()">
-                        <option></option>
-                      </select>
-                      <label class="mdl-textfield__label" for="octane">Ships</label>
+                      <br><br>
+                        <div id="confirmRouteDiv">
+                          <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick = "confirmRoute()" id="confirmRouteButton">
+                            Confirm
+                          </button>
+
+                          <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick="cancelRoute()" id="cancelRouteButton">
+                            Cancel
+                          </button>
+                            </div>
+                        </div>
+            			  <div id="hiddenDialog"></div>
+
+            		    	<!-- link js -->
+                      <script src="map.js"></script>
+                      <script src="routes.js"></script>
+                      </div>
                     </div>
-                        <div>
-                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick = "calculateInfo()" id="calculateInfoButton">
-                        Calculate Informations
-                      </button>
-                        </div>
-                        <br><br>
-                      <div id="confirmRouteDiv">
-                      <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick = "confirmRoute()" id="confirmRouteButton">
-                        Confirm
-                      </button>
-                      <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick="cancelRoute()" id="cancelRouteButton">
-                        Cancel
-                      </button>
-                        </div>
-                      </div>
+                  </div>
+                </center>
+                </div>
 
-                </section>
             </main>
-          </div>
+            </div>
 
-
-
+        </section>
+        </main>
+     </div>
     </body>
 </html>
